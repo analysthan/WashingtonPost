@@ -1,0 +1,96 @@
+__author__ = 'billcarmack'
+
+
+import csv
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+csvFile = open("commenters_summary.csv",'Ur')
+csvReader = csv.reader(csvFile,delimiter=',',quotechar='"')
+
+
+def read_country_summary(csvReader):
+
+    counter =0
+    country_list = []
+    country_counter_list = []
+
+    for row in csvReader:
+        if counter != 0:
+            country = row[7]
+            if country == "":
+                country = "None"
+
+            if country not in country_list:
+                country_list.append(country)
+                country_counter_list.append(1)
+            else:
+                country_index = country_list.index(country)
+                country_counter_list[country_index] += 1
+
+        counter = counter + 1
+        if(counter>1000):
+            break
+
+    print country_list
+    print country_counter_list
+
+    ind = np.arange(len(country_list))
+    ind = (ind + 5)*10
+    width = 2
+
+    ax = plt.subplot()
+
+    fig = plt.gcf()
+    fig.set_size_inches(20.5,12.5)
+
+    rect = ax.bar(ind,country_counter_list,width,color='r')
+    ax.set_xticks(ind)
+    ax.set_xticklabels(country_list)
+    ax.tick_params(axis='x',labelsize = 7)
+
+    plt.show()
+
+def read_gender_summary(csvReader):
+    counter =0
+    gender_list = []
+    gender_counter_list = []
+
+    for row in csvReader:
+        if counter != 0:
+            gender = row[5]
+            if gender == "":
+                gender = "None"
+
+            if gender not in gender_list:
+                gender_list.append(gender)
+                gender_counter_list.append(1)
+            else:
+                gender_index = gender_list.index(gender)
+                gender_counter_list[gender_index] += 1
+
+        counter = counter + 1
+        if(counter>1000):
+            break
+
+    print gender_list
+    print gender_counter_list
+
+    ind = np.arange(len(gender_list))
+    ind = (ind + 5)*5
+    width = 1
+
+
+    ax = plt.subplot()
+
+
+    rect = ax.bar(ind,gender_counter_list,width,color='r')
+    ax.set_xticks(ind)
+    ax.set_xticklabels(gender_list)
+
+    plt.show()
+
+
+read_country_summary(csvReader)
+read_gender_summary(csvReader)
